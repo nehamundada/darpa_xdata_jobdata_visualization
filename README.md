@@ -14,7 +14,9 @@ Following are the task:
 You need to build the project using maven:
 
 ```
+cd jobs
 mvn clean package
+cp target\jobs.war <web_server_root_directory>
 ```
 
 Deploy the war file onto a java web container - tomcat, jetty, etc
@@ -22,5 +24,5 @@ Deploy the war file onto a java web container - tomcat, jetty, etc
 [CS572 - Information Retrieval and Web Search Engines]:http://sunset.usc.edu/classes/cs572_2014/
 
 
-#### The data set contains 1.9 million job postings across many countries. The map below shows all countries containing job postings in purple.
+The data set contains 1.9 million job postings across many countries. The map below shows all countries containing job postings in purple.
 ![alt tag](https://github.com/shrikanthn/darpa_xdata_jobdata_visualization/blob/master/docs/map1.png)
