@@ -21,3 +21,6 @@ mvn clean package
 Deploy the war file onto a java web container - tomcat, jetty, etc
 
 [CS572 - Information Retrieval and Web Search Engines]:http://sunset.usc.edu/classes/cs572_2014/
+
+
+![alt tag](https://github.com/shrikanthn/darpa_xdata_jobdata_visualization/blob/master/docs/map1.png)
