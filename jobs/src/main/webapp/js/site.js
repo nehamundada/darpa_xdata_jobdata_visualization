@@ -47,7 +47,7 @@ function getSampleData1() {
 	var fillArr = {'defaultFill': '#EDDC4E'};
 	var dataArr = {};
 	for (var i in countryName) {
-		dataArr[countryName[i]] = { 'jobs' : 0 };
+		dataArr[countryName[i]] = { 'jobs' : 0, 'fillKey' : 'defaultFill' };
 	}
 
 	$.ajax({
