@@ -111,16 +111,19 @@ public class DBUtil {
 		System.out.println("getJobPointsForCountry : " + term);
 		JSONArray res = new JSONArray();
 		try {
-			String sql = "select distinct  latitude, longitude from jobs   where latitude is not null and latitude != 0 and latitude != '' and company = '"+term+"'";
+//			String sql = "select distinct latitude, longitude, country from jobs join address_info on lat=latitude and long=longitude where latitude is not null and latitude != 0 and latitude != '' and company = '"+term+"'";
+			String sql = "select lat as latitude, long as longitude, country from country_points where company = '"+term+"'";
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next())
 			{
 				JSONObject obj = new JSONObject();
-				obj.put("lat", rs.getString("latitude"));
-				obj.put("long", rs.getString("longitude"));
+				obj.put("latitude", rs.getString("latitude"));
+				obj.put("longitude", rs.getString("longitude"));
+				obj.put("country", rs.getString("country"));
 				res.put(obj);
 			}
+			System.out.println("---END" );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
