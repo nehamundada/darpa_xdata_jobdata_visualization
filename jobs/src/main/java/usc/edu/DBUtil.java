@@ -2,6 +2,7 @@ package usc.edu;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -56,6 +57,68 @@ public class DBUtil {
 				JSONObject obj = new JSONObject();
 				obj.put("name", rs.getString("city"));
 				obj.put("value", rs.getInt("total"));
+				res.put(obj);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
+	
+	
+	public static JSONArray serachCompanyNames(String term) {
+		JSONArray res = new JSONArray();
+		try {
+			String sql = "select distinct company from corporate_presence where company like '%"+term+"%'";
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				res.put(rs.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
+	public static JSONArray getCompaniesForCountry(String term) {
+		System.out.println("getCompaniesForCountry : " + term);
+		JSONArray res = new JSONArray();
+		try {
+			String sql = "select sum(total) as count, country from corporate_presence  where company = '"+term+"' group by country;";
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				JSONObject obj = new JSONObject();
+				obj.put("name", rs.getString("country"));
+				obj.put("value", rs.getInt("count"));
+				res.put(obj);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
+	
+	public static JSONArray getJobPointsForCountry(String term) {
+		System.out.println("getJobPointsForCountry : " + term);
+		JSONArray res = new JSONArray();
+		try {
+			String sql = "select distinct  latitude, longitude from jobs   where latitude is not null and latitude != 0 and latitude != '' and company = '"+term+"'";
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				JSONObject obj = new JSONObject();
+				obj.put("lat", rs.getString("latitude"));
+				obj.put("long", rs.getString("longitude"));
 				res.put(obj);
 			}
 		} catch (Exception e) {
