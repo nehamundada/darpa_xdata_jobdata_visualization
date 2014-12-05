@@ -15,4 +15,9 @@ CREATE INDEX corporate_presence_idx_3 on corporate_presence(company);
 
 
 CREATE TABLE country_points (lat int, long int, country text, company text);
-select distinct latitude, longitude, country, company from jobs join address_info on lat=latitude and long=longitude;
+insert into country_points select distinct latitude, longitude, country, company from jobs join address_info on lat=latitude and long=longitude;
+
+-- query2
+select company, count(*) as totalJobs, posteddate  
+from jobs where company = 'Adecco'
+group by posteddate;

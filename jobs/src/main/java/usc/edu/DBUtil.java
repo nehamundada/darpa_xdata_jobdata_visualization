@@ -2,7 +2,6 @@ package usc.edu;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -12,7 +11,7 @@ import org.json.JSONObject;
 public class DBUtil {
 
 	private static Connection connection = null;
-	private static final String dbPath = "/Users/shri/devel/cs572/code/Content-extraction-and-search-using-Apache-Tika/python_scripts/jobs.sqlite";
+	private static final String dbPath = "F:/study/sem3/CS572/HW/HW3/Db/jobs.sqlite";
 
 	static {
 
@@ -129,6 +128,11 @@ public class DBUtil {
 		}
 		
 		return res;
+	}
+
+	public static Object getCompanyGrowthOverTime(String term) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

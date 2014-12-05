@@ -68,4 +68,16 @@ public class Controller {
 		return Response.status(200).entity(DBUtil.getJobPointsForCountry(term).toString()).build();
 
 	}
+	
+	@POST
+	@Path("/getCompanyGrowthOverTime")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCompanyGrowthOverTime(
+			@Context HttpHeaders headers, 
+			@FormParam("term") String term) {
+		return Response.status(200).entity(DBUtil.getCompanyGrowthOverTime(term).toString()).build();
+
+	}
+	
 }
