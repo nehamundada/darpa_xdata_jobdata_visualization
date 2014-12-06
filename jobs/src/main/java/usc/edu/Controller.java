@@ -80,4 +80,15 @@ public class Controller {
 
 	}
 	
+	@POST
+	@Path("/getCompanyGrowthOverTimePoints")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCompanyGrowthOverTimePoints(
+			@Context HttpHeaders headers, 
+			@FormParam("term") String term) {
+		return Response.status(200).entity(DBUtil.getCompanyGrowthOverTimePoints(term).toString()).build();
+
+	}
+	
 }

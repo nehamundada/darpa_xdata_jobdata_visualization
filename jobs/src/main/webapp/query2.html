@@ -14,8 +14,10 @@
 	<script type="text/javascript" src="js/nv.d3.min.js"></script>
 	<script type="text/javascript"  src="http://d3js.org/topojson.v1.min.js"></script>
 	<script type="text/javascript"  src="js/datamaps.world.min.js"></script>	
+	<script type="text/javascript" src="js/Chart.min.js"></script>	
 	<script type="text/javascript"  src="js/countryNames.js"></script>	
 	<script type="text/javascript" src="js/query2.js"></script>	
+
 </head>
 <body>
 	<div class="container-fluid">
@@ -23,27 +25,33 @@
 		<h3>Query 2 : How companies are changing over time based on job postings.</h3>
 	</div>
 		<div class="row-fluid">
-			<div class="span1">&nbsp;</div>
-			<div class="span10">
-				<div class="row-fluid">
-					<div class="col-sm-6"> 
-						<form class="form-inline">
-							<input class="input" type="text" id="serachCompany" placeholder="Enter Company Name" />
-							<input type="button" class="btn btn-info btn-small" value="Show growth" id="btnSearchCompanyGrowth" />
-						</form>						    						    
-					 </div> 
-				</div>	
-			</div>
-			<div class="span1">&nbsp;</div>
+		<div class="col-sm-6 pull-left"> 
+			<form class="form-inline">
+				<input class="input" type="text" id="serachCompany" placeholder="Enter Company Name" />
+				<input type="button" class="btn btn-info btn-small" value="Show growth" id="btnSearchCompanyGrowth" />
+				<input type="button" class="btn btn-info btn-small" value="Show chart" id="btnSearchCompanyGrowthChart" />
+			</form>						    						    
+		 </div>
+		 <div class="col-sm-3 pull-right">
+			<table cellspacing=3px>
+				<caption>legend</caption>
+				<tr><td style="background-color: #d67777; width: 30px;">&nbsp;</td><td>Year 2012</td></tr>
+				<tr><td style="background-color: #4f99b4; width: 30px;">&nbsp;</td><td>Year 2013</td></tr>
+			</table>
+		</div> 
 		</div>
 		
-		<div id="graph">
-			<div id="container" style="position: relative; width: 1200px; height: 500px;"></div>
+		<div class="row-fluid" id="graph">
+			<div id="container" style="position: relative; width: 1500px; height: 600px;"></div>
 		</div>
-		<div id="chart">
+		<!-- <div id="chart1">
 			<svg style="height:500px"></svg>
+		</div> -->
+		
+		<div class="row-fluid">
+			<canvas id="myChart" width="1000" height="400"></canvas>
 		</div>
-	
+		
 	</div>
 </body>
 </html>

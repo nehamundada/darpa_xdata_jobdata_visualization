@@ -18,6 +18,10 @@ CREATE TABLE country_points (lat int, long int, country text, company text);
 insert into country_points select distinct latitude, longitude, country, company from jobs join address_info on lat=latitude and long=longitude;
 
 -- query2
-select company, count(*) as totalJobs, posteddate  
-from jobs where company = 'Adecco'
-group by posteddate;
+
+select count(*), company, country, strftime('%Y', firstSeenDate) as postedYear from jobs join address_info on lat = latitude and long  = longitude
+group by company, country, postedYear order by postedYear, country;
+
+--select company, count(*) as totalJobs, posteddate  
+--from jobs where company = 'Adecco'
+--group by posteddate;
