@@ -67,25 +67,29 @@
 				datatype : 'json',
 				data : {'term' : $( "#serachCompany").val() },
 				success : function(data) {
-					var newArr = [];
-					var fillArr = {'defaultFill': '#EDDC4E', 'point' : '#E80C7A'};
 					
-					for(var i in data) {
-						var obj = data[i];
-						 if (fillArr[obj['country']] == undefined) {
-							fillArr[obj['country']] = getRandomColor();
-						}
-						
-						 /*newArr.push({
-					        'radius': 3,					        
-					        'fillKey': obj['country'],
-					        'latitude': obj['latitude'],
-					        'longitude': obj['longitude']
-					      }); */ 
-						newArr.push({ 'location' : data[i]});
+					var mapPoints = [];
+					var fillArr = {'defaultFill': '#f4ea93'};		
+					var dataArr = {};
+					
+					for (var i in countryName) {
+						dataArr[countryName[i]] = { 'jobs' : 0, 'fillKey' : 'defaultFill' };
 					}
-					console.log(newArr);
-					renderJobPoints(newArr, fillArr);
+					for(var x in data) {
+						var o2 = data[x];
+						var cCode = countryName[o2['country']];
+						if(fillArr[cCode] == undefined) {
+							fillArr[cCode] = getRandomColor();
+						}
+						o2['radius'] = 3;
+						o2['borderWidth'] = 0.3;
+						o2['borderColor'] = '#FFFFFF';
+						o2['fillKey'] = cCode;
+						o2['country'] = cCode;
+						mapPoints.push(o2);
+					}
+					console.log(mapPoints);
+					renderJobPoints(mapPoints, fillArr);
 				}
 			});
 			
@@ -96,7 +100,7 @@
 	
 	function renderResultsForCompany(fillArr, dataArr) 
 	{
-		$('#graph').html('<div id="container" style="position: relative; width: 1200px; height: 500px;"></div>');
+		$('#container').html('');
 		var map = new Datamap(
 		{
 			element : document.getElementById('container'),
@@ -149,97 +153,34 @@
 	
 	function renderJobPoints(places, fillArr) {
 		
-		$('#graph').html('<div id="container" style="position: relative; width: 1200px; height: 500px;"></div>');
-	
-		var width = 1200;
-		  var height = 500;
-			 
-			 var projection = d3.geo.equirectangular()
-		      .scale(153)
-		      .translate([width / 2, height / 2])
-		      .precision(.1);
-			 
-		 var map = new Datamap(
+		$('#container').html('');
+		var map = new Datamap(
 		{
 			element : document.getElementById('container'),
 			geographyConfig : {
-				popupOnHover: false,
-				highlightOnHover : true,
-				projection: ''
+				// popupOnHover: false,
+				highlightOnHover : false,
+				borderColor : '#a59a36',
+				popupTemplate : function(geo, data) {
+					return [
+					        '<div class="hoverinfo"><strong>', geo.properties.name, '</strong></div>' ]
+					.join('');
+				}
 			},
-			setProjection: function(element) {
-	          var projection = d3.geo.equirectangular()
-			      .scale(153)
-			      .translate([width / 2, height / 2])
-			      .precision(.1);
-	          var path = d3.geo.path()
-	            .projection(projection);
-	          
-	          return {path: path, projection: projection};
-	        },
 			fills : fillArr,
 			data : {}
-		}); 
-		 
-		 
-		/* map.bubbles(places,{
-	        popupOnHover: false,
-	        highlightOnHover: false
-	      });  */
+		});
 		
-
-	  /* var path = d3.geo.path()
-	      .projection(projection);
-
-	  var graticule = d3.geo.graticule(); 
-
-	   var svg = d3.select("#container").append("svg")
-	      .attr("width", width)
-	      .attr("height", height);
-
-	  svg.append("path")
-	      .datum(graticule)
-	      .attr("class", "graticule")
-	      .attr("d", path);
-
-	  d3.json("http://bl.ocks.org//mbostock/raw/4090846/world-50m.json", function(error, world) {
-	    svg.insert("path", ".graticule")
-	        .datum(topojson.feature(world, world.objects.land))
-	        .attr("class", "land")
-	        .attr("d", path);
-
-	    svg.insert("path", ".graticule")
-	        .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
-	        .attr("class", "boundary")
-	        .attr("d", path);
-	  });
-
-	  d3.select(self.frameElement).style("height", height + "px");   */
-	  
-	   var svg = d3.select("#container svg")
-	   
-	/* 	svg.selectAll(".pin")
-		  .data(places)
-		  .enter().append("circle", ".pin")
-		  .attr("r", 5)
-		  .attr("transform", function(d) {
-		    return "translate(" + projection([
-		      d.location.longitude,
-		      d.location.latitude
-		    ]) + ")"
-		  }); */ 
-	  
-	   svg.selectAll("circle")
-		  .data(places)
-		  .enter().append("circle")
-		  .attr("r", 2)
-		  .style("fill", "red")
-		  .attr("transform", function(d) {
-		    return "translate(" + projection([
-		      d.location.longitude,
-		      d.location.latitude
-		    ]) + ")"
-		  }); 
+		map.bubbles(places, {
+		    popupOnHover: false,
+	        highlightOnHover: false
+		});
+		
+		
+		
+		
+		
+		 
 	}
 	
 	function getRandomColor() {
@@ -258,39 +199,18 @@
 		<h3>Query 3 : Provide a map of corporate presence across South America.</h3>
 	</div>
 		<div class="row-fluid">
-			<div class="span1">&nbsp;</div>
-			<div class="span10">
-				<div class="row-fluid">
-				
-
-				
-					<div class="col-sm-6"> 
-						<form class="form-inline">
-							<input class="input" type="text" id="serachCompany" placeholder="Enter Company Name" />
-							<input type="button" class="btn btn-info btn-small" value="Show Countries" id="btnSearchCompanyPresenceCountry" />
-							<input type="button" class="btn btn-info btn-small" value="Show Jobs" id="btnSearchCompanyPresencePoints" />
-						</form>						    
-						    
-					 </div>
-					 
-					 <div class="span6"> 
-						<form class="form-inline">
-						  <div class="form-group">
-						    <input class="input span3" type="text" id="searchCountry" placeholder="Search Country" />
-						  </div>
-						    <input type="button" class="btn btn-info btn-small" value="Search" id="btnSearchCountryPresence" />
-						</form>
-					 </div>
-				</div>	
-			</div>
-			<div class="span1">&nbsp;</div>
+			<form class="form-inline">
+				<input class="input" type="text" id="serachCompany" value="" placeholder="Enter Company Name" />
+				<input type="button" class="btn btn-info btn-small" value="Show Countries" id="btnSearchCompanyPresenceCountry" />
+				<input type="button" class="btn btn-info btn-small" value="Show Jobs" id="btnSearchCompanyPresencePoints" />
+			</form>
 		</div>
 		
-		<div id="graph">
-		<div id="container" style="position: relative; width: 1200px; height: 500px;"></div>
+		<div id="graph" class="row-fluid">
+			<div id="container" style="position:relative; width:1300px; height:500px"></div>
 		</div>
-		<div id="chart">
-			<svg style="height:500px"></svg>
+		<div id="chart" class="row-fluid">
+			<svg style="width: 100%; height:300px"></svg>
 		</div>
 	
 	</div>
