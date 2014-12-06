@@ -29,14 +29,16 @@
 			<form class="form-inline">
 				<input class="input" type="text" id="serachCompany" placeholder="Enter Company Name" />
 				<input type="button" class="btn btn-info btn-small" value="Show growth" id="btnSearchCompanyGrowth" />
-				<input type="button" class="btn btn-info btn-small" value="Show chart" id="btnSearchCompanyGrowthChart" />
 			</form>						    						    
 		 </div>
-		 <div class="col-sm-3 pull-right">
-			<table cellspacing=3px>
-				<caption>legend</caption>
-				<tr><td style="background-color: #d67777; width: 30px;">&nbsp;</td><td>Year 2012</td></tr>
-				<tr><td style="background-color: #4f99b4; width: 30px;">&nbsp;</td><td>Year 2013</td></tr>
+		 <div id="legend" class="col-sm-3 pull-right">
+			<table>
+				<caption style="margin-bottom:5px">Legend</caption>
+				<tr style="margin-bottom: 5px">
+				<td style="background-color: #d67777; width: 30px">&nbsp;</td>
+				<td>Year 2012</td></tr>
+				<tr><td style="background-color: #4f99b4; width: 30px">&nbsp;</td>
+				<td>Year 2013</td></tr>
 			</table>
 		</div> 
 		</div>
@@ -50,6 +52,9 @@
 		
 		<div class="row-fluid">
 			<canvas id="myChart" width="1000" height="400"></canvas>
+		</div>
+		<div style="margin-top:50px">
+		&nbsp;
 		</div>
 		
 	</div>

@@ -3,8 +3,13 @@
 <head>
 <meta charset="US-ASCII">
 <title>CS572 Visualization</title>
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.4.custom.min.css">
+	
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript"  src="js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/d3.min.js"></script>
 <script type="text/javascript"  src="http://d3js.org/topojson.v1.min.js"></script>
 <script type="text/javascript"  src="js/datamaps.world.min.js"></script>
@@ -12,8 +17,18 @@
 <script type="text/javascript"  src="js/site.js"></script>
 </head>
 <body>
-	<h4>Visualization</h4>
-
+	<h2 style="text-align: center">DARPA Xdata jobs Visualization</h2>
+	
 <div id="container" style="position: relative; width: 1200px; height: 500px;"></div>
+<div class="row-fluid">
+		<div class="col-sm-6" style="text-align:center"> 
+			<form class="form-inline">
+				<input type="button" class="btn-large btn btn-success" value="Query1" id="Query 1" />&nbsp;&nbsp;
+				<input type="button" class="btn-large btn btn-success" value="Query2" id="Query 2" />&nbsp;&nbsp;
+				<input type="button" class="btn-large btn btn-success" value="Query3" id="Query 3" />&nbsp;&nbsp;
+				<input type="button" class="btn-large btn btn-success" value="Query4" id="Query 4" />&nbsp;&nbsp;
+			</form>						    						    
+		 </div>
+	</div>
 </body>
 </html>
