@@ -1,7 +1,27 @@
+
+window.apiPath = window.location.protocol + "//" + window.location.host + "/jobs/";
+
 $(document).ready(function() {
 
 	getSampleData2();
+	bindButtons();
 });
+
+function bindButtons(){
+	$("#Query1").bind('click', function(event){
+		window.location = window.apiPath + "query1.html";
+	});
+	$("#Query2").bind('click', function(event){
+		window.location = window.apiPath + "query2.html";
+	});
+	$("#Query3").bind('click', function(event){
+		window.location = window.apiPath + "query3.html";
+	});
+	$("#Query4").bind('click', function(event){
+		window.location = window.apiPath + "query4.html";
+	});
+	
+}
 
 function renderSampleData(fillArr, dataArr) 
 {

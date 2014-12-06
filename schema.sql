@@ -19,8 +19,13 @@ insert into country_points select distinct latitude, longitude, country, company
 
 -- query2
 
+create table companyGrowth 
+(total int, company text, countr text, postedYear int);
+
+insert into companyGrowth 
 select count(*), company, country, strftime('%Y', firstSeenDate) as postedYear from jobs join address_info on lat = latitude and long  = longitude
 group by company, country, postedYear order by postedYear, country;
+
 
 --select company, count(*) as totalJobs, posteddate  
 --from jobs where company = 'Adecco'

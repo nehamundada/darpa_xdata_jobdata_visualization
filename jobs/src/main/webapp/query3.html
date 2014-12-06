@@ -20,7 +20,7 @@
 	window.apiPath = window.location.protocol + "//" + window.location.host + "/jobs/api/controller/";
 	
 	$(document).ready(function(){
-		
+		$("#query3-h3").css("display", "none");
 		$("#serachCompany").autocomplete({
 	      source: window.apiPath + 'serachCompany',
 	      minLength: 3,
@@ -37,7 +37,7 @@
 				datatype : 'json',
 				data : {'term' : $( "#serachCompany").val() },
 				success : function(data) {
-					
+					$("#query3-h3").css("display", "block");
 					var newDataArr = [];
 					var fillArr = {'defaultFill': '#f2e3d0'};		
 					var dataArr = {};
@@ -55,7 +55,6 @@
 					renderResultsForCompany(fillArr, dataArr); 
 					renderChart1(newDataArr);
 					
-					
 				}
 			});
 		});
@@ -67,7 +66,7 @@
 				datatype : 'json',
 				data : {'term' : $( "#serachCompany").val() },
 				success : function(data) {
-					
+					$("#query3-h3").css("display", "block");
 					var mapPoints = [];
 					var fillArr = {'defaultFill': '#f4ea93'};		
 					var dataArr = {};
@@ -100,6 +99,7 @@
 	
 	function renderResultsForCompany(fillArr, dataArr) 
 	{
+		
 		$('#container').html('');
 		var map = new Datamap(
 		{
@@ -209,7 +209,9 @@
 		<div id="graph" class="row-fluid">
 			<div id="container" style="position:relative; width:1300px; height:500px"></div>
 		</div>
+		<h3 id="query3-h3" style="text-align:center"> Number of jobs for a given country </h3>
 		<div id="chart" class="row-fluid">
+			
 			<svg style="width: 100%; height:300px"></svg>
 		</div>
 	
