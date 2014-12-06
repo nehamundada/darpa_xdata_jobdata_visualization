@@ -56,7 +56,7 @@ order by type, monthOfYear;
 
 
 
-create table ALL_TIEMPO_COMPLETO as SELECT  latitude, longitude , countryCode, jobtype, country,  street||','|| city || ',' || country ||','||zipcode as address   from jobs, address_info where  latitude=lat and longitude=long and jobtype ='Tiempo Completo'
+create table all_tiempo_completo as SELECT  latitude, longitude , countryCode, jobtype, country,  street||','|| city || ',' || country ||','||zipcode as address   from jobs, address_info where  latitude=lat and longitude=long and jobtype ='Tiempo Completo'
 
 create table ADECCO_TABLE as SELECT DISTINCT latitude, longitude , countryCode, jobtype, country,  street||','|| city || ',' || country ||','||zipcode as address   from jobs, address_info where  latitude=lat and longitude=long and company='Adecco'
 
