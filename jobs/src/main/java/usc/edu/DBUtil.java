@@ -14,7 +14,7 @@ import org.json.JSONObject;
 public class DBUtil {
 
 	private static Connection connection = null;
-	private static final String dbPath = "F:/study/sem3/CS572/HW/HW3/Db/jobs.sqlite";
+	private static final String dbPath = "F:/COURSES/Sem3/CSCI_572_Information Retreival and Search Engines/Assignment3/jobs.sqlite";
 //	private static final String dbPath = "/Users/shri/devel/cs572/code/Content-extraction-and-search-using-Apache-Tika/python_scripts/jobs.sqlite";
 
 	static {
@@ -69,6 +69,82 @@ public class DBUtil {
 		return res;
 	}
 	
+	
+public static JSONObject plotBarGraph(String company) {
+		
+		JSONObject object = new JSONObject();
+		JSONArray months = new JSONArray();
+		JSONArray counts = new JSONArray();
+		
+		String sql = "" ;
+		try {
+			 
+			sql = "SELECT  strftime('%m', firstSeenDate) ||'-'|| strftime('%Y', firstSeenDate)" +
+					"  as month , count(*) as total FROM jobs  where company='"+company +"'"+
+					" group by  strftime('%m', firstSeenDate) ||'-'|| strftime('%Y', firstSeenDate) ";
+		 
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			System.out.println(sql);
+			while(rs.next())
+			{    
+				months.put(rs.getString("month"));
+				counts.put(rs.getInt("total"));
+ 			}
+			object.put("regions", months);
+			object.put("institutions", counts);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return object;
+	}
+	
+	public static JSONArray getdataforcompanies(String company , String jobtype) {
+		JSONArray res = new JSONArray();
+		String sql = "" ;
+		try {
+			 if( company.equals("All") ){
+				if( jobtype.equals("Tiempo Completo") ){
+					sql = " SELECT * from ALL_TIEMPO_COMPLETO";
+				}else{
+					sql = " SELECT * from ALL_MEDIO_TIEMPO";
+				}
+				
+				if(!jobtype.equals("All")){
+					sql = sql + " where jobtype like '%" +jobtype +"%'";
+				}
+				
+			}else {
+				if( company.equals("Manpower"))
+					sql = " SELECT * from MANPOWER_TABLE ";
+				else
+					sql = " SELECT * from ADECCO_TABLE ";
+
+				if(!jobtype.equals("All")){
+					sql = sql + " where jobtype like '%" +jobtype +"%'";
+				}
+
+			}
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+ 
+			while(rs.next())
+			{    
+				JSONObject obj = new JSONObject();
+				obj.put("latitude", rs.getString("latitude"));
+				obj.put("longitude", rs.getString("longitude"));
+				obj.put("countryCode", rs.getString("countryCode"));
+				obj.put("address", rs.getString("address"));
+				res.put(obj);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
 	
 	
 	public static JSONArray serachCompanyNames(String term) {

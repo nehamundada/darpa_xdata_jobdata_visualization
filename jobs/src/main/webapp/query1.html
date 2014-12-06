@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="US-ASCII">
+<title>CS572 Visualization</title>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+<script type="text/javascript"  src="http://d3js.org/topojson.v1.min.js"></script>
+<script type="text/javascript"  src="js/datamaps.world.min.js"></script>
+<script type="text/javascript"  src="js/countryNames.js"></script>
+<script type="text/javascript"  src="js/query1.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body>
+	
+ <div style="margin-left:200px">
+ 
+ <h4>Query 1 : Visualize job postings geospatially and temporally by various attributes
+such as company, job type, salary, etc.</h4>
+
+	<select id="companylist">
+   		    <option value="All">All</option>	
+	   		<option value="Manpower">Manpower </option>	
+    		<option value="Activos">Activos </option>	
+            <option value="Adecco">Adecco</option>
+            <option value="Accion S.A">Accion S.A</option>
+            <option value="Adecco Colombia S.A.">Adecco Colombia S.A.</option>
+            <option value="Sertempo">Sertempo</option>
+            <option value="Adecco Peru S.A.">Adecco Peru S.A.</option>
+            <option value="Eficacia">Eficacia</option>
+            <option value="Escarh">Escarh</option>
+            <option value="Atento Colombia">Atento Colombia</option>
+
+    </select>
+    
+    <select id="jobtype">
+		    <option value="All">All</option>	
+    		<option value="Tiempo Completo">Tiempo Completo </option>	
+    		<option value="Medio Tiempo">Medio Tiempo </option>	
+            <option value="Por Horas">Por Horas</option>
+     </select>
+
+	 <input type="button" class="btn btn-primary" onclick="getdata()" value="Show Temporal"/>
+
+<br/><br/>
+
+</div>
+ 
+</body>
+</html>
+
+<script type="text/javascript">
+
+$('#companylist').on('change', loadCompany );
+$('#jobtype').on('change', loadCompany );
+
+function loadCompany(){
+	
+  	getSampleData1(  $('#companylist').val() , $('#jobtype').val() );
+	
+}
+
+function getdata(){
+	$.ajax({
+ 			url: 'http://localhost:8080/jobs/api/controller/sample3/' + $('#companylist').val(),
+			type : 'GET',
+			dataType: 'json',
+			
+			success: function(data){
+				 showtemporal(data);
+			}
+ 		});	
+}
+ 
+ 
+function showtemporal(data) {
+ 
+	 d3.select("#bargraph").remove();
+ 
+	 	 d3.select("body")
+					 .append("div")
+					 .attr("id", "bargraph");
+
+ 
+var margin = {top: 20, right: 20, bottom: 70, left: 140},
+width = 900 - margin.left - margin.right,
+height = 300 - margin.top - margin.bottom;
+
+    var x = d3.scale.ordinal()
+        .domain(data.regions.map(function(d) {
+            return d;}))
+        .rangeRoundBands([0, width], 0);
+ 
+    var y = d3.scale.linear()
+        .domain([0, d3.max(data.institutions)])
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis().scale(x).orient("bottom");
+
+    var yAxis = d3.svg.axis().scale(y).orient("left");
+
+    var svgContainer = d3.select("#bargraph").append("svg")
+		.attr("class", "chart")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom).append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+
+	svgContainer.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end")
+	.attr("dx", "-.8em").attr("dy", "-.55em").attr("transform", "rotate(-90)" );
+
+
+    svgContainer.append("g")
+        .attr("class", "y axis").call(yAxis)
+        .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Job Count");
+
+    svgContainer.selectAll(".bar").data(data.institutions).enter().append("rect").style("fill", "steelblue")
+     
+        .attr("x", function(d, i) {
+            return i * x.rangeBand();
+        })
+        .attr("y", function(d) {
+            return y(d);
+        })
+        .attr("width", function(){
+            return x.rangeBand();
+        })
+        .attr("height", function(d) {
+            return height -y(d);
+        });
+
+		svg.selectAll("bar").data(data.institutions).enter().append("rect").style("fill", "steelblue")
+	.attr("x", function(d) { return x(d.date); })
+	.attr("width", x.rangeBand())
+	.attr("y", function(d) { return y(d.value); })
+	.attr("height", function(d) { return height - y(d.value); });
+
+}
+ 
+</script>

@@ -26,6 +26,31 @@ public class Controller {
 		return Response.status(200).entity(DBUtil.getSampleData().toString()).build();
 	}
 
+	  
+    @GET
+   	@Path("/sample2/{country_name}/{jobtype}")
+   	@Produces(MediaType.TEXT_PLAIN)
+       public Response getJobsByCityForCountry(
+       		@Context HttpHeaders headers,       		
+       		@PathParam("country_name") String country_name,
+       		@PathParam("jobtype") String jobtype) {
+
+    	return Response.status(200).entity(DBUtil.getdataforcompanies(country_name , jobtype).toString()).build();
+       
+       }
+   
+
+    @GET
+   	@Path("/sample3/{company}")
+   	@Produces(MediaType.TEXT_PLAIN)
+       public Response plotBarGraph(
+       		@Context HttpHeaders headers,       		
+       		@PathParam("company") String company) {
+
+    	return Response.status(200).entity(DBUtil.plotBarGraph(company).toString()).build();
+       
+       }
+    
 	@GET
 	@Path("/sample2/{country_name}")
 	@Produces(MediaType.APPLICATION_JSON)
