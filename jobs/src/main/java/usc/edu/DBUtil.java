@@ -15,6 +15,7 @@ public class DBUtil {
 
 	private static Connection connection = null;
 	private static final String dbPath = "F:/study/sem3/CS572/HW/HW3/Db/jobs.sqlite";
+//	private static final String dbPath = "/Users/shri/devel/cs572/code/Content-extraction-and-search-using-Apache-Tika/python_scripts/jobs.sqlite";
 
 	static {
 
@@ -271,6 +272,7 @@ public class DBUtil {
 	}
 	
 	public static Object getCompanyGrowthOverTimePoints(String term) {
+
 		System.out.println("getCompanyGrowthOverTimePoints : " + term);
 		try {
 			String sql = "select lat, long, countr as country  from companyGrowthPoints where company = '"+term+"' and postedYear = 2012";
@@ -309,5 +311,67 @@ public class DBUtil {
 		
 		return null;
 	}
+
 	
+	public static JSONObject getJobCategoryGrowth() {
+		System.out.println("getJobCategoryGrowth");
+		final String[] categories = {"Asistente",  "Cocinero", "Contador", "Recepcionista" ,"Secretaria" ,"Ventas" ,"cajera"};
+		String sql = null;
+		final String[] headers = {"2012-10","2012-11","2012-12","2013-01","2013-02","2013-03","2013-04","2013-05","2013-06","2013-07","2013-08","2013-09","2013-10","2013-11","2013-12"};
+		HashMap<String, Integer>  results;
+		HashMap<String, ArrayList<Integer>>  fullList = new HashMap<String, ArrayList<Integer>>();
+		
+//		{
+//            label: "My First dataset",
+//            fillColor: "rgba(220,220,220,0.2)",
+//            strokeColor: "rgba(220,220,220,1)",
+//            pointColor: "rgba(220,220,220,1)",
+//            pointStrokeColor: "#fff",
+//            pointHighlightFill: "#fff",
+//            pointHighlightStroke: "rgba(220,220,220,1)",
+//            data: [65, 59, 80, 81, 56, 55, 40]
+//        }
+		
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet rs = null;
+			
+			for(String c : categories) {
+				sql = "select total, monthOfYear from jobCategoryGrowth where category = '"+c+"' ";
+				rs = stmt.executeQuery(sql);
+				results = new HashMap<String, Integer>();
+				
+				while(rs.next()) {
+					results.put(rs.getString("monthOfYear"), rs.getInt("total"));
+				}
+				System.out.println(c + " : " + results.size());
+				
+				ArrayList<Integer> a = new ArrayList<Integer>();
+				for(String h : headers) {
+					a.add(results.get(h));
+				}
+				fullList.put(c,a);
+				
+			}
+			
+			JSONArray datasets = new JSONArray();
+			for(String c : categories) {
+				JSONObject obj1 = new JSONObject();
+				obj1.put("label", c);
+				obj1.put("data", fullList.get(c));
+				datasets.put(obj1);
+			}
+			JSONObject finalData = new JSONObject();
+			finalData.put("labels", headers);
+			finalData.put("datasets", datasets);
+			return finalData;
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }
+
