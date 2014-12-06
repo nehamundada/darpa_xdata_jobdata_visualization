@@ -15,18 +15,7 @@ import javax.ws.rs.core.Response;
 
 @Path("controller")
 public class Controller {
-
-
-
-	@GET
-	@Path("/sample1")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getJobsByCountry( @Context HttpHeaders headers) {
-
-		return Response.status(200).entity(DBUtil.getSampleData().toString()).build();
-	}
-
-	  
+   
     @GET
    	@Path("/sample2/{country_name}/{jobtype}")
    	@Produces(MediaType.TEXT_PLAIN)
@@ -35,7 +24,7 @@ public class Controller {
        		@PathParam("country_name") String country_name,
        		@PathParam("jobtype") String jobtype) {
 
-    	return Response.status(200).entity(DBUtil.getdataforcompanies(country_name , jobtype).toString()).build();
+    	return Response.status(200).entity(SolrUtil.getdataforcompanies(country_name , jobtype).toString()).build();
        
        }
    
@@ -47,20 +36,9 @@ public class Controller {
        		@Context HttpHeaders headers,       		
        		@PathParam("company") String company) {
 
-    	return Response.status(200).entity(DBUtil.plotBarGraph(company).toString()).build();
+    	return Response.status(200).entity(SolrUtil.plotBarGraph(company).toString()).build();
        
        }
-    
-	@GET
-	@Path("/sample2/{country_name}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getJobsByCityForCountry(
-			@Context HttpHeaders headers,       		
-			@PathParam("country_name") String country_name) {
-
-		return Response.status(200).entity(DBUtil.getSampleData2(country_name).toString()).build();
-
-	}
 	
 	
 	@GET
@@ -69,7 +47,7 @@ public class Controller {
 	public Response serachCompany(
 			@Context HttpHeaders headers,       		
 			@QueryParam("term") String term) {
-		return Response.status(200).entity(DBUtil.serachCompanyNames(term).toString()).build();
+		return Response.status(200).entity(SolrUtil.serachCompanyNames(term).toString()).build();
 
 	}
 	
@@ -80,7 +58,7 @@ public class Controller {
 	public Response getCompaniesForCountry(
 			@Context HttpHeaders headers, 
 			@FormParam("term") String term) {
-		return Response.status(200).entity(DBUtil.getCompaniesForCountry(term).toString()).build();
+		return Response.status(200).entity(SolrUtil.getCompaniesForCountry(term).toString()).build();
 
 	}
 	@POST
@@ -90,39 +68,8 @@ public class Controller {
 	public Response getJobPointsForCountry(
 			@Context HttpHeaders headers, 
 			@FormParam("term") String term) {
-		return Response.status(200).entity(DBUtil.getJobPointsForCountry(term).toString()).build();
+		return Response.status(200).entity(SolrUtil.getJobPointsForCountry(term).toString()).build();
 
-	}
-	
-	@POST
-	@Path("/getCompanyGrowthOverTime")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCompanyGrowthOverTime(
-			@Context HttpHeaders headers, 
-			@FormParam("term") String term) {
-		return Response.status(200).entity(DBUtil.getCompanyGrowthOverTime(term).toString()).build();
-
-	}
-	
-	@POST
-	@Path("/getCompanyGrowthOverTimePoints")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCompanyGrowthOverTimePoints(
-			@Context HttpHeaders headers, 
-			@FormParam("term") String term) {
-		return Response.status(200).entity(DBUtil.getCompanyGrowthOverTimePoints(term).toString()).build();
-
-	}
-	
-	@POST
-	@Path("/getJobCategoryGrowth")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getJobCategoryGrowth() {
-		return Response.status(200).entity(DBUtil.getJobCategoryGrowth().toString()).build();
-		
 	}
 	
 }
