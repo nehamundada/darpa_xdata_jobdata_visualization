@@ -201,6 +201,7 @@ public class DBUtil {
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(sql);
 			HashMap<String, Integer> res2 = new HashMap<String, Integer>();
+			HashMap<String, Integer> diff = new HashMap<String, Integer>();
 			while(rs.next()) {
 				res2.put(rs.getString("country"), rs.getInt("total"));
 			}
@@ -220,7 +221,13 @@ public class DBUtil {
 					res1.put(k, 0);
 				}
 			}
-
+			
+			itr = res2.keySet().iterator();
+			while(itr.hasNext()) {
+				String k = itr.next();
+					diff.put(k, (res1.get(k)- res2.get(k)));
+				}
+			
 			ArrayList<String> labels = new ArrayList<String>();
 			ArrayList<Integer> d1 = new ArrayList<Integer>();
 			ArrayList<Integer> d2 = new ArrayList<Integer>();
@@ -251,6 +258,7 @@ public class DBUtil {
 			
 			finalData.put("labels", labels);
 			finalData.put("datasets", dataArr);
+			finalData.put("differences", diff);
 			return finalData;
 			
 			

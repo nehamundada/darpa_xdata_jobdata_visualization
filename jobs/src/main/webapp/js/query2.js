@@ -3,6 +3,7 @@ window.apiPath = window.location.protocol + "//" + window.location.host + "/jobs
 	$(document).ready(function(){
 		
 		$("#legend").css("display", "none");
+		$("#h3").css("display", "none");
 		$("#serachCompany").autocomplete({
 	      source: window.apiPath + 'serachCompany',
 	      minLength: 3,
@@ -70,6 +71,7 @@ window.apiPath = window.location.protocol + "//" + window.location.host + "/jobs
 				success : function(data) {
 					
 					$("#legend").css("display", "block");
+					$("#h3").css("display", "block");
 					var d1 = {
 							name : data['datasets'][0]['label'],
 							label : data['datasets'][0]['label'],
@@ -89,11 +91,25 @@ window.apiPath = window.location.protocol + "//" + window.location.host + "/jobs
 							showTooltips: true,
 							legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
 					};
+					
+					var data1 = [];
+					console.log(data['differences']);
+					for(var key in data['differences']) {
+						var p = {
+								value: data['differences'][key],
+								color: getRandomColor(),
+				                highlight: "#FF5A5E",
+				                label: key
+						};
+						data1.push(p);
+					}
+					console.log(data1);
 					$("#myChart").html('');
 					var ctx = document.getElementById("myChart").getContext("2d");
 					var myBarChart = new Chart(ctx).Bar({'labels' : data['labels'], 'datasets' : [d1, d2]}, options);
-					
-					
+					$("#pieChart").html('');
+					var ctx = document.getElementById("pieChart").getContext("2d");
+					var myPieChart = new Chart(ctx).Pie(data1,options);
 				}
 			});
 		});
@@ -135,7 +151,11 @@ function getRandomColor() {
 	return color;
 }
 	
-	// chart
+	// pie chart
+$('#btnSearchCompanyGrowth').bind('click', function(event){
+	
+});
+
 	
 	
 
