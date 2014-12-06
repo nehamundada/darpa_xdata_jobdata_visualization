@@ -25,3 +25,25 @@ group by company, country, postedYear order by postedYear, country;
 --select company, count(*) as totalJobs, posteddate  
 --from jobs where company = 'Adecco'
 --group by posteddate;
+
+
+
+
+
+create table jobCategoryGrowth ( total int, monthOfYear text, category text);
+
+select count(*),  strftime('%Y-%m', firstseendate)  as monthOfYear, 'Asistente' as type from jobs where title like '%asistente%' or title like '%auxiliar%' group by monthOfYear 
+union
+select count(*),  strftime('%Y-%m', firstseendate)  as monthOfYear, 'cajera' as type from jobs where title like '%cajera%'  group by monthOfYear 
+union
+select count(*),  strftime('%Y-%m', firstseendate)  as monthOfYear, 'Ventas' as type from jobs where title like '%ventas%'  group by monthOfYear 
+union
+select count(*),  strftime('%Y-%m', firstseendate)  as monthOfYear, 'Recepcionista' as type from jobs where title like '%Recepcionis%'  group by monthOfYear 
+union
+select count(*),  strftime('%Y-%m', firstseendate)  as monthOfYear, 'Contador' as type from jobs where title like '%Contador%'  group by monthOfYear 
+union
+select count(*),  strftime('%Y-%m', firstseendate)  as monthOfYear, 'Cocinero' as type from jobs where title like '%Cocinero%'  group by monthOfYear 
+union
+select count(*),  strftime('%Y-%m', firstseendate)  as monthOfYear, 'Secretaria' as type from jobs where title like '%Secretaria%'  group by monthOfYear 
+
+order by type, monthOfYear 

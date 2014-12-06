@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="US-ASCII">
+	<title>CS572 Visualization - Query 3</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.4.custom.min.css">
+	<link rel="stylesheet" type="text/css" href="css/nv.d3.min.css">
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript"  src="js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/d3.min.js"></script>
+	<script type="text/javascript" src="js/nv.d3.min.js"></script>
+	<script type="text/javascript"  src="http://d3js.org/topojson.v1.min.js"></script>
+	<script type="text/javascript"  src="js/datamaps.world.min.js"></script>	
+	<script type="text/javascript"  src="js/countryNames.js"></script>	
+	<script type="text/javascript" src="js/Chart.min.js"></script>	
+	<script type="text/javascript">
+	
+	window.apiPath = window.location.protocol + "//" + window.location.host + "/jobs/api/controller/";
+	
+	$(document).ready(function(){
+		
+		$.ajax({
+			url : window.apiPath + 'getJobCategoryGrowth',
+			type : 'POST',
+			datatype : 'json',
+			success : function(data) {
+				
+				
+/* 				var data = {
+					    labels: ["January", "February", "March", "April", "May", "June", "July"],
+					    datasets: [
+					        {
+					            label: "My First dataset",
+					            fillColor: "rgba(220,220,220,0.2)",
+					            strokeColor: "rgba(220,220,220,1)",
+					            pointColor: "rgba(220,220,220,1)",
+					            pointStrokeColor: "#fff",
+					            pointHighlightFill: "#fff",
+					            pointHighlightStroke: "rgba(220,220,220,1)",
+					            data: [65, 59, 80, 81, 56, 55, 40]
+					        },
+					        {
+					            label: "My Second dataset",
+					            fillColor: "rgba(151,187,205,0.2)",
+					            strokeColor: "rgba(151,187,205,1)",
+					            pointColor: "rgba(151,187,205,1)",
+					            pointStrokeColor: "#fff",
+					            pointHighlightFill: "#fff",
+					            pointHighlightStroke: "rgba(151,187,205,1)",
+					            data: [28, 48, 40, 19, 86, 27, 90]
+					        }
+					    ]
+					}; */
+					
+				$('#legend').html('');
+				for(var x in data['datasets']) 
+				{
+					var c1 = getRandomColor();
+					var o1 = data['datasets'][x];
+					o1['fillColor'] = "transparent";
+					o1['strokeColor']= c1
+					o1['lineColorq']= c1
+					o1['pointColor']= c1;
+					o1['pointStrokeColor']= "#fff";
+					o1['pointHighlightFill']= "#fff";
+					o1['pointHighlightStroke']= "rgba(220,220,220,1)";
+					
+					$('#legend').append('<tr> <td style="width:20px; background-color:'+c1+'">&nbsp</td> <td>'+o1['label']+'</td> </tr>');
+				} 
+				
+				var ctx = document.getElementById("myChart").getContext("2d");
+				var myLineChart = new Chart(ctx).Line(data, {
+					legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+				});
+					  
+				
+			}
+		});
+		
+		
+	});
+	
+	function getRandomColor() {
+		var letters = '0123456789ABCDEF'.split('');
+		var color = '#';
+		for (var i = 0; i < 6; i++ ) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
+	}
+	</script>
+</head>
+<body>
+	<div class="container-fluid">
+	<div class="row-fluid">
+		<h3>Query 4 : Plot and analyze the seasonal trends of different job categories</h3>
+	</div>
+		<div class="row-fluid">
+			<div class="pull-left">
+				<canvas id="myChart" width="1200px" height="600px"></canvas>
+			</div>
+			<div class="pull-right">
+				<table id="legend"></table>
+			</div>
+		</div>
+		
+	
+	</div>
+</body>
+</html>

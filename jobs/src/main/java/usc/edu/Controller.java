@@ -91,4 +91,13 @@ public class Controller {
 
 	}
 	
+	@POST
+	@Path("/getJobCategoryGrowth")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getJobCategoryGrowth() {
+		return Response.status(200).entity(DBUtil.getJobCategoryGrowth().toString()).build();
+		
+	}
+	
 }
